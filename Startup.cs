@@ -22,11 +22,11 @@ namespace Shop
         public void ConfigureServices(IServiceCollection services)
         {
             //for localdb
-            services.AddDbContext<ShopContext>(options =>
-                                               options.UseSqlServer(Configuration.GetConnectionString("ShopContext")));
+            //services.AddDbContext<ShopContext>(options =>
+            //                                   options.UseSqlServer(Configuration.GetConnectionString("ShopContext")));
 
-            //for sqllite
-            //services.AddDbContext<ShopContext>(options => options.UseSqlite("Data Source=shop.db"));
+            ////for sqllite
+            services.AddDbContext<ShopContext>(options => options.UseSqlite("Data Source=shop.db"));
 
             services.Configure<CookiePolicyOptions>(options =>
             {
