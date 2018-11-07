@@ -28,7 +28,13 @@
                     <td>@cartItem.Product.Price</td>
                     <td>@cartItem.CountOfProduct</td>
                     <td>@(cartItem.Product.Price * cartItem.CountOfProduct)</td>
-                    <td><a href="cart/delete/@(cartItem.Id)" class="btn btn-danger">Удалить</a></td>
+                    <td>
+                        <form class="form" action="cart/delete/@(cartItem.Id)" method="get">
+                            <input type="hidden" name="cartID1" value="@(cartItem.Id)" />
+                            <input type="number" name="count" value="" />
+                            <input type="submit" value="Удалить" class="btn btn-danger" />
+                        </form>
+                    </td>
                 </tr>
             }
         </tbody>

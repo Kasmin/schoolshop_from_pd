@@ -65,16 +65,24 @@ namespace Shop.Controllers
         }
 
         [HttpGet]
-        [Route("delete/{productID:int}", Name = "DeleteProductFromCart")]
-        public async Task<IActionResult> Delete(int productID)
+        [Route("delete/{cartID:int}", Name = "DeleteProductFromCart")]
+        public async Task<IActionResult> Delete(int cartID, int count)
         {
-            CartItem cartItem = await _db.CartItems.FirstOrDefaultAsync(ci => ci.Id == productID);
+            CartItem cartItem = await _db.CartItems.FirstOrDefaultAsync(ci => ci.Id == cartID);
             if(cartItem != null)
             {
-                _db.CartItems.Remove(cartItem);
+                if(cartItem.CountOfProduct <= count)
+                {
+                    _db.CartItems.Remove(cartItem);
+                } else if(count > 0)
+                {
+                    cartItem.CountOfProduct -= count;
+                    _db.CartItems.Attach(cartItem);
+                    _db.Entry(cartItem).State = EntityState.Modified;
+                }
                 await _db.SaveChangesAsync();
                 return RedirectToAction("Index");
-            }
+            } 
 
             throw new Exception("Ошибка удаления CartItem");
         }
