@@ -16,6 +16,7 @@
                 <th>Цена</th>
                 <th>Количество</th>
                 <th>Итог</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -27,6 +28,7 @@
                     <td>@cartItem.Product.Price</td>
                     <td>@cartItem.CountOfProduct</td>
                     <td>@(cartItem.Product.Price * cartItem.CountOfProduct)</td>
+                    <td><a href="cart/delete/@(cartItem.Id)" class="btn btn-danger">Удалить</a></td>
                 </tr>
             }
         </tbody>

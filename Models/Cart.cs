@@ -9,7 +9,6 @@ namespace Shop.Models
 
         public List<CartItem> CartItems { get; set; }
 
-
         public Cart()
         {
         }

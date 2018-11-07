@@ -5,10 +5,11 @@ namespace Shop.Models
     {
         private CartItem()
         { }
-        public CartItem(Product product, int count)
+        public CartItem(Product product, int count, int cartID)
         {
             Product = product;
             CountOfProduct = count;
+            CartId = cartID;
         }
 
         public int Id { get; set; }

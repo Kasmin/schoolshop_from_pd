@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace Shop.Controllers
 {
+    [Route("cart")]
     public class CartController : Controller
     {
         private readonly int id = 1; // Before single user mode
@@ -22,13 +23,60 @@ namespace Shop.Controllers
             _db = db;
         }
 
-        // GET: /<controller>/
+        [HttpGet]
+        [Route("")]
         public async Task<IActionResult> Index()
         {
-            var cart = await _db.Carts.Include(c => c.CartItems).ThenInclude(ci => ci.Product).FirstOrDefaultAsync(c => c.Id == id);
+            var cart = await _db.Carts
+                .Include(c => c.CartItems)
+                .ThenInclude(ci => ci.Product)
+                .FirstOrDefaultAsync(c => c.Id == id);
             List<CartItem> cartItems = cart.CartItems;
 
             return View(cartItems);
+        }
+
+        [HttpGet]
+        [Route("add/{productID:int}", Name = "AddProductToCart")]
+        public async Task<IActionResult> Add(int productID, int count = 1, int cartID = 1)
+        {
+            Product productToCart = await _db.Products.FirstOrDefaultAsync(p => p.Id == productID);
+            CartItem existCartItem = await _db.CartItems.FirstOrDefaultAsync(ci => ci.ProductId == productID);
+            
+            if(existCartItem != null)
+            {
+                existCartItem.CountOfProduct += count;
+                _db.CartItems.Attach(existCartItem);
+                _db.Entry(existCartItem).State = EntityState.Modified;
+                await _db.SaveChangesAsync();
+                ViewData["productCount"] = count;
+                return View(existCartItem);
+            }
+            else if (productToCart != null)
+            {
+                CartItem cartItem = new CartItem(productToCart, count, cartID);
+                _db.CartItems.Add(cartItem);
+                await _db.SaveChangesAsync();
+                ViewData["productCount"] = cartItem.CountOfProduct;
+                return View(cartItem);
+            } 
+
+            throw new Exception("Неверный ID продукта");
+        }
+
+        [HttpGet]
+        [Route("delete/{productID:int}", Name = "DeleteProductFromCart")]
+        public async Task<IActionResult> Delete(int productID)
+        {
+            CartItem cartItem = await _db.CartItems.FirstOrDefaultAsync(ci => ci.Id == productID);
+            if(cartItem != null)
+            {
+                _db.CartItems.Remove(cartItem);
+                await _db.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+
+            throw new Exception("Ошибка удаления CartItem");
         }
     }
 }

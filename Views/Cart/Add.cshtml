@@ -1,0 +1,12 @@
+﻿@model CartItem
+@{
+    var title = "Товар добавлен";
+    ViewData["Title"] = title;
+}
+
+<h2>@title</h2>
+
+<p>@Model.Product.Name количеством @ViewData["productCount"] шт. добавлен в корзину</p>
+<p><a href="javascript:history.go(-1)">Продолжить покупки</a></p>
+
+
