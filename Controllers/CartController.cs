@@ -32,7 +32,7 @@ namespace Shop.Controllers
                 .ThenInclude(ci => ci.Product)
                 .FirstOrDefaultAsync(c => c.Id == id);
             List<CartItem> cartItems = cart.CartItems;
-
+            ViewData["cartID"] = cart.Id;
             return View(cartItems);
         }
 

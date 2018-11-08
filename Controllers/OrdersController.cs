@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Shop.Data;
+using Shop.Models;
 using Shop.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,34 @@ namespace Shop.Controllers
                 });
 
             return View(ordersViewModel);
+        }
+        [Route("make/{cartID:int}")]
+        public async Task<IActionResult> Make(int cartID)
+        {
+            Cart cart = _db.Carts.Include(c => c.CartItems).ThenInclude(ci => ci.Product).FirstOrDefault(c => c.Id == cartID);
+            if(cart != null)
+            {
+                Order order = new Order();
+                foreach (CartItem ci in cart.CartItems)
+                {
+                    order.Items.Add(new OrderItem(ci.Product, ci.CountOfProduct));
+                    
+                }
+                _db.Orders.Add(order);
+                await _db.SaveChangesAsync();
+
+                // Temporary code block
+
+                cart.CartItems.Clear();
+                _db.Carts.Attach(cart);
+                _db.Entry(cart).State = EntityState.Modified;
+                await _db.SaveChangesAsync();
+                // End of Temporary code block
+
+                return RedirectToAction("Index");
+            }
+
+            throw new Exception("Корзина не существует");
         }
     }
 }
