@@ -331,3 +331,4 @@ ASALocalRun/
 
 # SQL lite files
 *.db
+*.db-journal
