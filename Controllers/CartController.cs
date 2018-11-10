@@ -32,57 +32,77 @@ namespace Shop.Controllers
                 .ThenInclude(ci => ci.Product)
                 .FirstOrDefaultAsync(c => c.Id == id);
             List<CartItem> cartItems = cart.CartItems;
-            ViewData["cartID"] = cart.Id;
+            TempData["cartId"] = cart.Id;
             return View(cartItems);
         }
 
         [HttpGet]
-        [Route("add/{productID:int}", Name = "AddProductToCart")]
-        public async Task<IActionResult> Add(int productID, int count = 1, int cartID = 1)
+        [Route("add/{productId:int}", Name = "AddProductToCart")]
+        public async Task<IActionResult> Add(int productId, int count = 1, int cartId = 1)
         {
-            Product productToCart = await _db.Products.FirstOrDefaultAsync(p => p.Id == productID);
-            CartItem existCartItem = await _db.CartItems.FirstOrDefaultAsync(ci => ci.ProductId == productID);
-            
-            if(existCartItem != null)
+            Product productToCart = await _db.Products.FirstOrDefaultAsync(p => p.Id == productId);
+            CartItem existCartItem = await _db.CartItems.FirstOrDefaultAsync(ci => ci.ProductId == productId);
+
+            if (productToCart != null)
             {
-                existCartItem.CountOfProduct += count;
-                _db.CartItems.Attach(existCartItem);
-                _db.Entry(existCartItem).State = EntityState.Modified;
+                CartItem _cartItem;
+                if (existCartItem != null)
+                {
+                    existCartItem.CountOfProduct += count;
+                    _db.CartItems.Update(existCartItem);
+                    _cartItem = existCartItem;
+                    TempData["productCount"] = count;
+                }
+                else
+                {
+                    _cartItem = new CartItem(productToCart, count, cartId);
+                    _db.CartItems.Add(_cartItem);
+                    TempData["productCount"] = _cartItem.CountOfProduct;
+                }
                 await _db.SaveChangesAsync();
-                ViewData["productCount"] = count;
-                return View(existCartItem);
+                return View(_cartItem);
             }
-            else if (productToCart != null)
-            {
-                CartItem cartItem = new CartItem(productToCart, count, cartID);
-                _db.CartItems.Add(cartItem);
-                await _db.SaveChangesAsync();
-                ViewData["productCount"] = cartItem.CountOfProduct;
-                return View(cartItem);
-            } 
+
+
+            //if (existCartItem != null)
+            //{
+            //    existCartItem.CountOfProduct += count;
+            //    _db.CartItems.Update(existCartItem);
+            //    await _db.SaveChangesAsync();
+            //    TempData["productCount"] = count;
+            //    return View(existCartItem);
+            //}
+            //else if (productToCart != null)
+            //{
+            //    CartItem cartItem = new CartItem(productToCart, count, cartId);
+            //    _db.CartItems.Add(cartItem);
+            //    await _db.SaveChangesAsync();
+            //    TempData["productCount"] = cartItem.CountOfProduct;
+            //    return View(cartItem);
+            //}
 
             throw new Exception("Неверный ID продукта");
         }
 
         [HttpGet]
         [Route("delete/{cartID:int}", Name = "DeleteProductFromCart")]
-        public async Task<IActionResult> Delete(int cartID, int count)
+        public async Task<IActionResult> Delete(int cartId, int count)
         {
-            CartItem cartItem = await _db.CartItems.FirstOrDefaultAsync(ci => ci.Id == cartID);
-            if(cartItem != null)
+            CartItem cartItem = await _db.CartItems.FirstOrDefaultAsync(ci => ci.Id == cartId);
+            if (cartItem != null)
             {
-                if(cartItem.CountOfProduct <= count)
+                if (cartItem.CountOfProduct <= count)
                 {
                     _db.CartItems.Remove(cartItem);
-                } else if(count > 0)
+                }
+                else if (count > 0)
                 {
                     cartItem.CountOfProduct -= count;
-                    _db.CartItems.Attach(cartItem);
-                    _db.Entry(cartItem).State = EntityState.Modified;
+                    _db.CartItems.Update(cartItem);
                 }
                 await _db.SaveChangesAsync();
                 return RedirectToAction("Index");
-            } 
+            }
 
             throw new Exception("Ошибка удаления CartItem");
         }

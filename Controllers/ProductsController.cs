@@ -63,8 +63,7 @@ namespace Shop.Controllers
             }
             else
             {
-                _db.Products.Attach(product);
-                _db.Entry(product).State = EntityState.Modified;
+                _db.Products.Update(product);
             }
 
             await _db.SaveChangesAsync();

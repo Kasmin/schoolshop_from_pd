@@ -43,10 +43,13 @@ namespace Shop.Controllers
 
             return View(ordersViewModel);
         }
-        [Route("make/{cartID:int}")]
-        public async Task<IActionResult> Make(int cartID)
+        [Route("make/{cartId:int}")]
+        public async Task<IActionResult> Make(int cartId)
         {
-            Cart cart = _db.Carts.Include(c => c.CartItems).ThenInclude(ci => ci.Product).FirstOrDefault(c => c.Id == cartID);
+            Cart cart = _db.Carts
+                           .Include(c => c.CartItems)
+                           .ThenInclude(ci => ci.Product)
+                           .FirstOrDefault(c => c.Id == cartId);
             if(cart != null)
             {
                 Order order = new Order();
@@ -61,8 +64,7 @@ namespace Shop.Controllers
                 // Temporary code block
 
                 cart.CartItems.Clear();
-                _db.Carts.Attach(cart);
-                _db.Entry(cart).State = EntityState.Modified;
+                _db.Carts.Update(cart);
                 await _db.SaveChangesAsync();
                 // End of Temporary code block
 
