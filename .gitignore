@@ -330,4 +330,4 @@ ASALocalRun/
 .mfractor/
 
 # SQL lite files
-# *.db
+*.db

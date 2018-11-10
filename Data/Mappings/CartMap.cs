@@ -11,6 +11,10 @@ namespace Shop.Data.Mappings
         public void Configure(EntityTypeBuilder<Cart> builder)
         {
             builder.HasMany(c => c.CartItems);
+
+            builder.HasData(
+                new Cart() { Id = 1}
+            );
         }
     }
 }
