@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Shop</title>
+    <environment include="Development">
+        @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />*@
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <environment exclude="Development">
+        @*<link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />*@
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/base-min.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/buttons-min.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/forms-min.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/menus-min.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/tables-min.css"/>
+    <style>
+        .wrapper {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: 100px 1fr 50px;
+        }
+        .menu{
+            grid-column-start: 1;
+            grid-column-end: 5;
+            grid-row-start: 1;
+            grid-row-end: 2;
+        }
+        .content{
+            grid-column-start: 1;
+            grid-column-end: 5;
+            grid-row-start: 2;
+            grid-row-end: 3;
+        }
+        .footer{
+            grid-column-start: 1;
+            grid-column-end: 5;
+            grid-row-start: 3;
+            grid-row-end: 4;
+        }
+        .product-table{
+            width: 100%;
+        }
+        .product-actions > * {
+            display: inline-block;
+        }
+        .button-success,
+        .button-error,
+        .button-warning {
+            color: white;
+            border-radius: 4px;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+        }
+
+        .button-success {
+            background: rgb(28, 184, 65); /* this is a green */
+        }
+
+        .button-error {
+            background: rgb(202, 60, 60); /* this is a maroon */
+        }
+
+        .button-warning {
+            background: rgb(223, 117, 20); /* this is an orange */
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="menu">
+            <nav class="pure-menu pure-menu-horizontal">
+                        <ul class="pure-menu-list">
+                            <li class="pure-menu-item"><a class="pure-menu-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                            <li class="pure-menu-item"><a class="pure-menu-link" asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+                            <li class="pure-menu-item"><a class="pure-menu-link" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                            <li class="pure-menu-item"><a class="pure-menu-link" asp-area="" asp-controller="Products" asp-action="Index">Products</a></li>
+                            <li class="pure-menu-item"><a class="pure-menu-link" asp-area="" asp-controller="Orders" asp-action="Index">Orders</a></li>
+                            <li class="pure-menu-item"><a class="pure-menu-link" asp-area="" asp-controller="Cart" asp-action="Index">Cart</a></li>
+                        </ul>
+            </nav>
+            <partial name="_CookieConsentPartial" />
+        </div>
+        <div class="content">
+            @RenderBody()
+            <hr />
+        </div>
+        <div class="footer">
+            <p>&copy; 2018 - Shop</p>
+        </div>
+    </div>
+    
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+   @*     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>*@
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT"></script>
+    @*    <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"></script>*@
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,19 +1,18 @@
 ﻿@model IEnumerable<Product>
 
 @{
+    Layout = "_GridLayout";
     var title = "Продукты";
     ViewData["Title"] = title;
 }
 
 <h2>@title</h2>
 
-<div class="row">
-    <div class="col-md-1">
-        <a href="/products/add" class="btn btn-primary">Добавить продукт</a>
-    </div>
+<div class="">
+        <a href="/products/add" class="pure-button button-success">Добавить продукт</a>
 </div>
 
-<table class="table table-bordered">
+<table class="pure-table pure-table-bordered product-table">
     <thead>
         <tr>
             <th>Название продукта</th>
@@ -27,16 +26,14 @@
             <tr>
                 <td>@product.Name</td>
                 <td>@product.Price</td>
-                <td>
-                    <form class="form" action="cart/add/@product.Id" method="get">
+                <td class="product-actions">
+                    <form class="pure-form" action="cart/add/@product.Id" method="get">
                         <input type="hidden" name="productId" value="@product.Id"/>
-                        <input type="number" name="count" value=""/>
-                        <input type="submit" value="Купить" class="btn btn-success" />
+                        <input type="number" name="count" value="" placeholder="Количество"/>
+                        <input type="submit" value="Купить" class="pure-button button-success" />
                     </form>
-                    @*<a href="cart/add/@(product.Id)" class="btn btn-success">Купить</a> *@
-                    <a href="products/edit/@(product.Id)" class="btn btn-info">Редактировать</a>
-                    @*@Html.ActionLink("Удалить", "Delete", htmlAttributes: new { @class = "btn btn-danger" }, routeValues: new { id = product.Id })*@
-                    <a href="products/delete/@(product.Id)" class="btn btn-danger">Удалить</a>
+                    <a href="products/edit/@(product.Id)" class="pure-button button-warning">Редактировать</a>
+                    <a href="products/delete/@(product.Id)" class="pure-button button-error">Удалить</a>
                 </td>
             </tr>
         }
