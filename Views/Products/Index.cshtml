@@ -8,7 +8,7 @@
 
 <h2>@title</h2>
 
-<div class="">
+<div class="add-button">
         <a href="/products/add" class="pure-button button-success">Добавить продукт</a>
 </div>
 
@@ -27,7 +27,7 @@
                 <td>@product.Name</td>
                 <td>@product.Price</td>
                 <td class="product-actions">
-                    <form class="pure-form" action="cart/add/@product.Id" method="get">
+                    <form class="pure-form buy-form" action="cart/add/@product.Id" method="get">
                         <input type="hidden" name="productId" value="@product.Id"/>
                         <input type="number" name="count" value="" placeholder="Количество"/>
                         <input type="submit" value="Купить" class="pure-button button-success" />

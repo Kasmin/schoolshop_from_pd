@@ -1,44 +1,55 @@
 ﻿@model List<CartItem>
 @{
+    Layout = "_GridLayout";
     var title = "Корзина";
     ViewData["Title"] = title;
+    var cartEmpty = TempData["cartEmpty"];
     decimal Sum = 0; // Temp variable, before develope ViewModel
 }
 
 <h2>@title</h2>
-
 <div class="md-t-1">
-
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Название продукта</th>
-                <th>Цена</th>
-                <th>Количество</th>
-                <th>Итог</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var cartItem in Model)
-            {
-                Sum += cartItem.Product.Price * cartItem.CountOfProduct;
+    @if (cartEmpty.ToString() == "True")
+    {
+        <h3>Корзина пуста</h3>
+        <p><a class="pure-button button-success" asp-area="" asp-controller="Products" asp-action="Index">Подобрать продукты</a></p>
+    }
+    else
+    {
+        <table class="pure-table pure-table-bordered product-table">
+            <thead>
                 <tr>
-                    <td>@cartItem.Product.Name</td>
-                    <td>@cartItem.Product.Price</td>
-                    <td>@cartItem.CountOfProduct</td>
-                    <td>@(cartItem.Product.Price * cartItem.CountOfProduct)</td>
-                    <td>
-                        <form class="form" action="cart/delete/@(cartItem.Id)" method="get">
-                            <input type="hidden" name="cartId1" value="@(cartItem.Id)" />
-                            <input type="number" name="count" value="" />
-                            <input type="submit" value="Удалить" class="btn btn-danger" />
-                        </form>
-                    </td>
+                    <th>Название продукта</th>
+                    <th>Цена</th>
+                    <th>Количество</th>
+                    <th>Итог</th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
-    <h3>Сумма товаров в корзине: @Sum</h3>
-    <h3><a href="orders/make/@TempData["cartId"]">Оформить заказ</a></h3>
+            </thead>
+            <tbody>
+                @foreach (var cartItem in Model)
+                {
+                    Sum += cartItem.Product.Price * cartItem.CountOfProduct;
+                    <tr>
+                        <td>@cartItem.Product.Name</td>
+                        <td>@cartItem.Product.Price</td>
+                        <td>@cartItem.CountOfProduct</td>
+                        <td>@(cartItem.Product.Price * cartItem.CountOfProduct)</td>
+                        <td>
+                            <form class="form" action="cart/delete/@(cartItem.Id)" method="get">
+                                <input type="hidden" name="cartId1" value="@(cartItem.Id)" />
+                                <input type="number" name="count" value="" />
+                                <input type="submit" value="Удалить" class="pure-button button-error" />
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <h3>Сумма товаров в корзине: @Sum руб.</h3>
+        <h3><a class="pure-button button-success" href="orders/make/@TempData["cartId"]">Оформить заказ</a></h3>
+    }
+
+
+
 </div>

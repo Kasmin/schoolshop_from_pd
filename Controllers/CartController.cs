@@ -32,7 +32,14 @@ namespace Shop.Controllers
                 .ThenInclude(ci => ci.Product)
                 .FirstOrDefaultAsync(c => c.Id == id);
             List<CartItem> cartItems = cart.CartItems;
-            TempData["cartId"] = cart.Id;
+            if (cartItems.Count == 0)
+            {
+                TempData["cartEmpty"] = true;
+            } else {
+                TempData["cartEmpty"] = false;
+                TempData["cartId"] = cart.Id;
+            }
+
             return View(cartItems);
         }
 

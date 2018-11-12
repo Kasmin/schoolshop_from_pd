@@ -26,6 +26,7 @@ namespace Shop.Controllers
             var orders = await _db.Orders
                 .Include(x => x.Items)
                 .ThenInclude(x => x.Product)
+                .OrderByDescending(x => x.Number)
                 .ToListAsync();
 
             var ordersViewModel = orders
@@ -50,13 +51,13 @@ namespace Shop.Controllers
                            .Include(c => c.CartItems)
                            .ThenInclude(ci => ci.Product)
                            .FirstOrDefault(c => c.Id == cartId);
-            if(cart != null)
+            if (cart != null)
             {
                 Order order = new Order();
                 foreach (CartItem ci in cart.CartItems)
                 {
                     order.Items.Add(new OrderItem(ci.Product, ci.CountOfProduct));
-                    
+
                 }
                 _db.Orders.Add(order);
                 await _db.SaveChangesAsync();
