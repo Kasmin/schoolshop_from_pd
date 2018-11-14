@@ -67,26 +67,16 @@ namespace Shop.Controllers
                     TempData["productCount"] = _cartItem.CountOfProduct;
                 }
                 await _db.SaveChangesAsync();
-                return View(_cartItem);
+                ProductToCartView jsonBody = new ProductToCartView()
+                {
+                    ProductName = _cartItem.Product.Name,
+                    ProductPrice = _cartItem.Product.Price,
+                    ProductCount = count
+                };
+                //string[] jsonBody = new string[3] { _cartItem.Product.Name, _cartItem.Product.Price.ToString(), count.ToString() };
+                return Json(jsonBody);
+                //return Json(true);
             }
-
-
-            //if (existCartItem != null)
-            //{
-            //    existCartItem.CountOfProduct += count;
-            //    _db.CartItems.Update(existCartItem);
-            //    await _db.SaveChangesAsync();
-            //    TempData["productCount"] = count;
-            //    return View(existCartItem);
-            //}
-            //else if (productToCart != null)
-            //{
-            //    CartItem cartItem = new CartItem(productToCart, count, cartId);
-            //    _db.CartItems.Add(cartItem);
-            //    await _db.SaveChangesAsync();
-            //    TempData["productCount"] = cartItem.CountOfProduct;
-            //    return View(cartItem);
-            //}
 
             throw new Exception("Неверный ID продукта");
         }

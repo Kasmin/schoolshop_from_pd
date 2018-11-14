@@ -27,10 +27,10 @@
                 <td>@product.Name</td>
                 <td>@product.Price</td>
                 <td class="product-actions">
-                    <form class="pure-form buy-form" action="cart/add/@product.Id" method="get">
+                    <form class="pure-form buy-form" action="cart/add/@product.Id" method="get" name="buyForm1">
                         <input type="hidden" name="productId" value="@product.Id"/>
                         <input type="number" name="count" value="" placeholder="Количество"/>
-                        <input type="submit" value="Купить" class="pure-button button-success" />
+                        <input type="submit" value="Купить" class="pure-button button-success buy-button" />
                     </form>
                     <a href="products/edit/@(product.Id)" class="pure-button button-warning">Редактировать</a>
                     <a href="products/delete/@(product.Id)" class="pure-button button-error">Удалить</a>
@@ -39,3 +39,49 @@
         }
     </tbody>
 </table>
+
+<div class="added-product hidden">
+    <h3>Вы добавили продукт в корзину</h3>
+    <p class="added-product-name"></p>
+    <p class="added-product-price"></p>
+    <p class="added-product-count"></p>
+    <p><a class="pure-button button-success" asp-area="" asp-controller="Cart" asp-action="Index">Просмотреть корзину</a></p>
+    <p><a class="pure-button button-success buy-next">Продолжить покупки</a></p>
+</div>
+
+<script>
+    var sendForm = function (th) {
+        var xhr = new XMLHttpRequest();
+        var form = th.parentNode;
+        var productId = form.elements.productId.value;
+        var count = form.elements.count.value;
+        var params = '?count=' + count;
+        var url = 'cart/add/' + productId + params;
+        xhr.open('GET', url, true);
+        xhr.send();
+
+        xhr.onload = function () {
+            addedProduct = JSON.parse(xhr.response);
+            console.log(addedProduct);
+            document.querySelector('.added-product-name').innerHTML = addedProduct.productName;
+            document.querySelector('.added-product-price').innerHTML = addedProduct.ProductPrice;
+            document.querySelector('.added-product-count').innerHTML = addedProduct.ProductCount;
+            document.querySelector('.added-product').classList.remove('hidden');
+        }
+    }
+
+    var forms = document.querySelectorAll('.buy-button')
+    for (var i = 0; i < forms.length; i++) {
+        forms[i].addEventListener('click', function (evt) {
+            evt.preventDefault();
+            sendForm(this);
+        });
+    }
+
+    document.querySelector('.buy-next').addEventListener('click', function (evt) {
+        evt.preventDefault();
+        document.querySelector('.added-product').classList.add('hidden');
+    });
+
+        
+</script>
