@@ -63,7 +63,6 @@
 
         xhr.onload = function () {
             addedProduct = JSON.parse(xhr.response);
-            console.log(addedProduct);
             document.querySelector('.added-product-name').innerHTML = addedProduct.productName;
             document.querySelector('.added-product-price').innerHTML = addedProduct.productPrice + ' руб.';
             document.querySelector('.added-product-count').innerHTML = addedProduct.productCount + ' шт.';
