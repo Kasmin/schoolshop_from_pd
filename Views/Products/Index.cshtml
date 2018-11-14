@@ -42,10 +42,10 @@
 
 <div class="added-product hidden">
     <h3>Вы добавили продукт в корзину</h3>
-    <p class="added-product-name"></p>
-    <p class="added-product-price"></p>
-    <p class="added-product-count"></p>
-    <p><a class="pure-button button-success" asp-area="" asp-controller="Cart" asp-action="Index">Просмотреть корзину</a></p>
+    <p>Наименование: <span class="added-product-name"></span></p>
+    <p>Стоимость: <span class="added-product-price"></span></p>
+    <p>Количество: <span class="added-product-count"></span></p>
+    <p><a class="pure-button button-warning" asp-area="" asp-controller="Cart" asp-action="Index">Просмотреть корзину</a></p>
     <p><a class="pure-button button-success buy-next">Продолжить покупки</a></p>
 </div>
 
@@ -57,6 +57,7 @@
         var count = form.elements.count.value;
         var params = '?count=' + count;
         var url = 'cart/add/' + productId + params;
+        form.elements.count.value = null;
         xhr.open('GET', url, true);
         xhr.send();
 
@@ -64,8 +65,9 @@
             addedProduct = JSON.parse(xhr.response);
             console.log(addedProduct);
             document.querySelector('.added-product-name').innerHTML = addedProduct.productName;
-            document.querySelector('.added-product-price').innerHTML = addedProduct.ProductPrice;
-            document.querySelector('.added-product-count').innerHTML = addedProduct.ProductCount;
+            document.querySelector('.added-product-price').innerHTML = addedProduct.productPrice + ' руб.';
+            document.querySelector('.added-product-count').innerHTML = addedProduct.productCount + ' шт.';
+            document.querySelector('#overlay').classList.remove('hidden');
             document.querySelector('.added-product').classList.remove('hidden');
         }
     }
@@ -81,6 +83,7 @@
     document.querySelector('.buy-next').addEventListener('click', function (evt) {
         evt.preventDefault();
         document.querySelector('.added-product').classList.add('hidden');
+        document.querySelector('#overlay').classList.add('hidden');
     });
 
         

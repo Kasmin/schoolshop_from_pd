@@ -80,6 +80,25 @@
         .button-warning {
             background: rgb(223, 117, 20); /* this is an orange */
         }
+
+        .added-product {
+            transform: translateX(-50%);
+            position: fixed;
+            top: 130px;
+            left: 50%;
+            border: 2px solid black;
+            padding: 30px 40px;
+            z-index: 101;
+            background: white;
+        }
+        #overlay {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            background: rgba(0,0,0,0.4);
+            top: 0;
+            left: 0;
+        }
     </style>
 </head>
 <body>
@@ -105,6 +124,7 @@
             <p>&copy; 2018 - Shop</p>
         </div>
     </div>
+    <div id="overlay" class="hidden"></div>
     
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
