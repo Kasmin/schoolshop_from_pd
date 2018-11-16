@@ -12,33 +12,25 @@
         <a href="/products/add" class="pure-button button-success">Добавить продукт</a>
 </div>
 
-<table class="pure-table pure-table-bordered product-table">
-    <thead>
-        <tr>
-            <th>Название продукта</th>
-            <th>Цена</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var product in Model)
-        {
-            <tr>
-                <td>@product.Name</td>
-                <td>@product.Price</td>
-                <td class="product-actions">
-                    <form class="pure-form buy-form" action="cart/add/@product.Id" method="get" name="buyForm1">
-                        <input type="hidden" name="productId" value="@product.Id"/>
-                        <input type="number" name="count" value="" placeholder="Количество"/>
-                        <input type="submit" value="Купить" class="pure-button button-success buy-button" />
-                    </form>
-                    <a href="products/edit/@(product.Id)" class="pure-button button-warning">Редактировать</a>
-                    <a href="products/delete/@(product.Id)" class="pure-button button-error">Удалить</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="product-wrapper">
+    @foreach (var product in Model)
+    {
+    <div class="product-item">
+        <div class="product-img"><img src="https://via.placeholder.com/300?text=RosKvartal"/></div>
+        <div class="product-name">@product.Name</div>
+        <div class="product-price">@product.Price руб.</div>
+        <div class="product-actions">
+            <form class="pure-form buy-form" action="cart/add/@product.Id" method="get" name="buyForm1">
+                <input type="hidden" name="productId" value="@product.Id" />
+                <input type="number" name="count" value="" placeholder="Количество" />
+                <input type="submit" value="Купить" class="pure-button button-success buy-button" />
+            </form>
+            <a href="products/edit/@(product.Id)" class="pure-button button-warning">Редактировать</a>
+            <a href="products/delete/@(product.Id)" class="pure-button button-error">Удалить</a>
+        </div>
+    </div>
+    }
+</div>
 
 <div class="added-product hidden">
     <h3>Вы добавили продукт в корзину</h3>
