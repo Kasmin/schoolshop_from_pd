@@ -73,9 +73,8 @@ namespace Shop.Controllers
                     ProductPrice = _cartItem.Product.Price,
                     ProductCount = count
                 };
-                //string[] jsonBody = new string[3] { _cartItem.Product.Name, _cartItem.Product.Price.ToString(), count.ToString() };
+                
                 return Json(jsonBody);
-                //return Json(true);
             }
 
             throw new Exception("Неверный ID продукта");
